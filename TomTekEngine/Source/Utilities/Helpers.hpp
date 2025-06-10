@@ -24,11 +24,28 @@
 
 	Script Author: Liam Rousselle
 */
+#pragma once
+
 #include <iostream>
 
-int main( int argc, char* argv[] )
+class Helpers
 {
-	std::cout << "Hello World!\n";
-	std::cin.get();
-	return EXIT_SUCCESS;
-}
+
+public:
+
+	static void Log( std::string log )
+	{
+		std::cout << "[LOG]: " << log << "\n";
+	}
+
+	static void Warn( std::string warning )
+	{
+		std::cerr << "[WARN]: " << warning << "\n";
+	}
+
+	static void Error( std::string error )
+	{
+		std::cerr << "[ERROR]: " << error << "\n";
+	}
+
+};
