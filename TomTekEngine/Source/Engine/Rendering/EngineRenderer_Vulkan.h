@@ -36,10 +36,14 @@
 class EngineRenderer_Vulkan : public EngineRenderer
 {
 public:
-	EngineRenderer_Vulkan() = default;
+	EngineRenderer_Vulkan();
 
 public:
 	virtual bool IsOkay() override;
+
+private:
+	uint32_t m_ExtensionCount;
+	VkInstance m_Instance;
 
 };
 
