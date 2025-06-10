@@ -24,21 +24,13 @@
 
 	Script Author: Liam Rousselle
 */
-#pragma once
+#if defined (_WIN32) || (__linux__)
 
-#include <iostream>
+#include "EngineRenderer_Vulkan.h"
 
-class EngineRenderer
+bool EngineRenderer_Vulkan::IsOkay()
 {
-protected:
-	EngineRenderer();
+	return m_RendererOnline;
+}
 
-public:
-	static EngineRenderer* ManufactureRendererByOs();
-
-	virtual bool IsOkay() = 0;
-
-protected:
-	bool m_RendererOnline;
-
-};
+#endif

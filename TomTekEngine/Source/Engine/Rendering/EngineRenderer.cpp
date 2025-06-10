@@ -27,7 +27,7 @@
 #include "EngineRenderer.h"
 #include "Utilities/Helpers.hpp"
 
-#if defined (__USING_VULKAN__)
+#if defined (_WIN32) || defined (__linux__)
     #include "EngineRenderer_Vulkan.h"
 #endif
 
@@ -40,11 +40,11 @@ EngineRenderer::EngineRenderer()
 EngineRenderer* EngineRenderer::ManufactureRendererByOs()
 {
 
-#if defined (__USING_VULKAN__)
+#if defined (_WIN32) || defined(__linux__)
 
     return new EngineRenderer_Vulkan();
 
-#elif defined (__USING_METAL__)
+#elif defined (__APPLE__)
 
     
 
@@ -52,9 +52,4 @@ EngineRenderer* EngineRenderer::ManufactureRendererByOs()
 
     
     return nullptr;
-}
-
-bool EngineRenderer::IsOkay() const
-{
-    return m_RendererOnline;
 }

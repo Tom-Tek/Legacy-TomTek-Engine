@@ -13,5 +13,6 @@
     <ClCompile Include="Source\Utilities\Helpers.hpp" />
     <ClCompile Include="Source\Engine\EngineCore.cpp" />
     <ClCompile Include="Source\Engine\Rendering\EngineRenderer.cpp" />
+    <ClCompile Include="Source\Engine\Rendering\EngineRenderer_Vulkan.cpp" />
   </ItemGroup>
 </Project>
