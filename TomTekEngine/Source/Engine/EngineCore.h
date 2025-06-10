@@ -25,23 +25,26 @@
 	Script Author: Liam Rousselle
 */
 #pragma once
-#if defined (_WIN32)
 
-#include <Windows.h>
-#include "EngineWindow.h"
+#include <iostream>
 
-class EngineWindow_Win32 : public EngineWindow
+class EngineWindow;
+class EngineRenderer;
+
+class EngineCore
 {
+public:
+	EngineCore( EngineWindow* window, EngineRenderer* renderer );
 
 public:
-	EngineWindow_Win32( std::string winName, uint32_t width, uint32_t height );
+	bool IsEngineRunning();
 
-public:
-	virtual bool PollWindowEvents() override;
+	void UpdateEngine();
 
 private:
-	MSG m_Msg;
+	bool m_EngineOnline = false;
+
+	std::unique_ptr<EngineWindow> m_Window;
+	std::unique_ptr<EngineRenderer> m_Renderer;
 
 };
-
-#endif //_WIN32

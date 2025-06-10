@@ -25,23 +25,27 @@
 	Script Author: Liam Rousselle
 */
 #pragma once
-#if defined (_WIN32)
 
-#include <Windows.h>
-#include "EngineWindow.h"
+#include <iostream>
 
-class EngineWindow_Win32 : public EngineWindow
+#if defined (_WIN32) || defined (__linux__)
+	#define __USING_VULKAN__
+#endif
+#if defined (__APPLE__)
+	#define __USING_METAL__
+#endif //__APPLE__
+
+class EngineRenderer
 {
+protected:
+	EngineRenderer();
 
 public:
-	EngineWindow_Win32( std::string winName, uint32_t width, uint32_t height );
+	static EngineRenderer* ManufactureRendererByOs();
 
-public:
-	virtual bool PollWindowEvents() override;
+	bool IsOkay() const;
 
 private:
-	MSG m_Msg;
+	bool m_RendererOnline;
 
 };
-
-#endif //_WIN32

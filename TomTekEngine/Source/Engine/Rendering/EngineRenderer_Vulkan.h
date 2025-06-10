@@ -25,23 +25,19 @@
 	Script Author: Liam Rousselle
 */
 #pragma once
-#if defined (_WIN32)
 
-#include <Windows.h>
-#include "EngineWindow.h"
+#if defined (__USING_VULKAN__)
 
-class EngineWindow_Win32 : public EngineWindow
+#include <iostream>
+#include "EngineRenderer.h"
+
+class EngineRenderer_Vulkan : public EngineRenderer
 {
-
 public:
-	EngineWindow_Win32( std::string winName, uint32_t width, uint32_t height );
+	EngineRenderer_Vulkan() = default;
 
-public:
-	virtual bool PollWindowEvents() override;
 
-private:
-	MSG m_Msg;
 
 };
 
-#endif //_WIN32
+#endif

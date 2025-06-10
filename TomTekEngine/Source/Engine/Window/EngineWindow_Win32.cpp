@@ -36,19 +36,22 @@ LRESULT CALLBACK WindowProcess( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 	case WM_DESTROY:
 		PostQuitMessage( EXIT_SUCCESS );
 		return 0;
+
 	case WM_PAINT:
+	{
 		PAINTSTRUCT paintStruct;
 		HDC hdc = BeginPaint( hwnd, &paintStruct );
 		EndPaint( hwnd, &paintStruct );
 		return 0;
-
+	}
 	default:
 		return DefWindowProc( hwnd, msg, wParam, lParam );
 	}
 }
 
 EngineWindow_Win32::EngineWindow_Win32( std::string winName, uint32_t width, uint32_t height ) :
-	EngineWindow( winName, width, height )
+	EngineWindow( winName, width, height ),
+	m_Msg( {} )
 {
 	HINSTANCE hInstance = GetModuleHandle( nullptr );
 
@@ -83,6 +86,19 @@ EngineWindow_Win32::EngineWindow_Win32( std::string winName, uint32_t width, uin
 	ShowWindow( hwnd, SW_SHOW );
 	UpdateWindow( hwnd );
 
+}
+
+bool EngineWindow_Win32::PollWindowEvents()
+{
+	if ( !GetMessage( &m_Msg, nullptr, 0, 0 ) )
+	{
+		return false;
+	}
+
+	TranslateMessage( &m_Msg );
+	DispatchMessage( &m_Msg );
+
+	return true;
 }
 
 #endif //_WIN32

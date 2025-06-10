@@ -33,10 +33,32 @@ class EngineWindow
 {
 
 protected:
+	/**
+	 * CLASS IS NOT MEANT TO BE CONSTRUCTED OUTSIDE BY ANY THIRD PARTIES.
+	 * Class serves the purpose of being an abstract class
+	 * INSTEAD, USE FUNCTION "ManufactureWindowByOs" TO CREATE A WINDOW
+	*/
 	EngineWindow( std::string winName, uint32_t width, uint32_t height );
 
 public:
+	/**
+	 * Since different operating systems have different ways of handling window creation
+	 * this method will be used to seemlessly handle the creation of a blank window without the caller
+	 * needing to worry about specific calls and edge cases needed for each operating system.
+	 * 
+	 * Call this to create a new Window, this function will handle cross-platform windows!
+	*/
 	static EngineWindow* ManufactureWindowByOs( std::string winName, uint32_t width, uint32_t height );
+
+	/**
+	 * Intended to be overwritten
+	 * Should be called every game frame to refresh neccessary window logic
+	 * that needs to be called every frame.
+	 * 
+	 * This method should return false once it wants to close/is no longer alive
+	 * If the window is remains alive return true
+	*/
+	virtual bool PollWindowEvents() = 0;
 
 protected:
 	uint32_t m_Width;

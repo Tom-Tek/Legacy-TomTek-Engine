@@ -24,24 +24,22 @@
 
 	Script Author: Liam Rousselle
 */
-#pragma once
-#if defined (_WIN32)
+#include <iostream>
 
-#include <Windows.h>
-#include "EngineWindow.h"
+#include "Engine/EngineCore.h"
+#include "Engine/Window/EngineWindow.h"
+#include "Engine/Rendering/EngineRenderer.h"
 
-class EngineWindow_Win32 : public EngineWindow
+int main( int argc, char* argv[] )
 {
+	EngineWindow* gameWindow = EngineWindow::ManufactureWindowByOs( "My Window", 800, 600 );
+	EngineRenderer* gameRenderer = EngineRenderer::ManufactureRendererByOs();
 
-public:
-	EngineWindow_Win32( std::string winName, uint32_t width, uint32_t height );
+	EngineCore engineCore( gameWindow, gameRenderer );
+	while ( engineCore.IsEngineRunning() )
+	{
+		engineCore.UpdateEngine();
+	}
 
-public:
-	virtual bool PollWindowEvents() override;
-
-private:
-	MSG m_Msg;
-
-};
-
-#endif //_WIN32
+	return EXIT_SUCCESS;
+}
