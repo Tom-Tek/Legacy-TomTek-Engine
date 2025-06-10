@@ -40,11 +40,11 @@ EngineRenderer::EngineRenderer()
 EngineRenderer* EngineRenderer::ManufactureRendererByOs()
 {
 
-#if defined (_WIN32) || defined (__linux__)
+#if defined (__USING_VULKAN__)
 
     return new EngineRenderer_Vulkan();
 
-#elif defined (__APPLE__)
+#elif defined (__USING_METAL__)
 
     
 
