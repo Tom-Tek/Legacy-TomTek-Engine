@@ -24,40 +24,4 @@
 
 	Script Author: Liam Rousselle
 */
-#if defined (_WIN32) || (__linux__)
-
-#include <vector>
 #include "EngineRenderer_Vulkan.h"
-
-#include "Utilities/Helpers.hpp"
-
-EngineRenderer_Vulkan::EngineRenderer_Vulkan()
-{
-	//Get all extensions
-	vkEnumerateInstanceExtensionProperties( nullptr, &m_ExtensionCount, nullptr );
-	std::vector<VkExtensionProperties> extensions( m_ExtensionCount );
-	vkEnumerateInstanceExtensionProperties( nullptr, &m_ExtensionCount, extensions.data() );
-
-	std::vector<const char*> enabledExtensions = {
-		VK_KHR_SURFACE_EXTENSION_NAME,
-		VK_EXT_DEBUG_UTILS_EXTENSION_NAME
-	};
-
-	//Create vulkan instance
-	VkInstanceCreateInfo createInfo = {};
-	createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-
-	if ( vkCreateInstance( &createInfo, nullptr, &m_Instance ) != VK_SUCCESS )
-	{
-		throw std::exception( "EngineRenderer_Vulkan fatal construction error! Failed to create vkInstnace m_Instance" );
-	}
-
-	Helpers::Log( "Successfully created vkInstance" );
-}
-
-bool EngineRenderer_Vulkan::IsOkay()
-{
-	return m_RendererOnline;
-}
-
-#endif

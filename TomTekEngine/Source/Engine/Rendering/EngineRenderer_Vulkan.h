@@ -28,22 +28,10 @@
 
 #if defined (_WIN32) || defined(__linux__)
 
-#include <iostream>
-#include <vulkan/vulkan.h>
-
 #include "EngineRenderer.h"
 
 class EngineRenderer_Vulkan : public EngineRenderer
 {
-public:
-	EngineRenderer_Vulkan();
-
-public:
-	virtual bool IsOkay() override;
-
-private:
-	uint32_t m_ExtensionCount;
-	VkInstance m_Instance;
 
 };
 

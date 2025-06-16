@@ -34,8 +34,19 @@ protected:
 	EngineRenderer();
 
 public:
+	/**
+	 * Responsible for creating a new renderer for the caller.
+	 * Type of renderer created depends on the operating system which this application
+	 * is running on.
+	 * For Windows & Linux the EngineRenderer_Vulkan will be created
+	 * For Apple the EngineRenderer_Metal will be created (renderer does not exist yet)
+	*/
 	static EngineRenderer* ManufactureRendererByOs();
 
+	/**
+	 * Used	to see if the renderer is still online and is available to render.
+	 * This is meant to be overwritten by the inheritted class
+	 */
 	virtual bool IsOkay() = 0;
 
 protected:
