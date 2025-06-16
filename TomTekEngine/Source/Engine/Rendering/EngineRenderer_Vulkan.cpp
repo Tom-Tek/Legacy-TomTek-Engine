@@ -24,4 +24,57 @@
 
 	Script Author: Liam Rousselle
 */
+#if defined (_WIN32) || defined (__linux__)
+
+#include <vector>
 #include "EngineRenderer_Vulkan.h"
+
+EngineRenderer_Vulkan::EngineRenderer_Vulkan() :
+	m_Instance( VK_NULL_HANDLE )
+{
+	CreateMemberInstance();
+}
+
+EngineRenderer_Vulkan::~EngineRenderer_Vulkan()
+{
+
+}
+
+void EngineRenderer_Vulkan::CreateMemberInstance()
+{
+	const std::vector<const char*> validationLayers = {
+		"VK_LAYER_KHRONOS_validation",
+
+		
+	};
+
+	const std::vector<const char*> extensionLayers = {
+		VK_KHR_SURFACE_EXTENSION_NAME,
+
+		//DEBUG EXTENSIONS
+		VK_EXT_DEBUG_UTILS_EXTENSION_NAME,
+		VK_EXT_DEBUG_REPORT_EXTENSION_NAME,
+
+		//OPERATING SYSTEM SPECIFIC EXTENSION LAYERS
+#if defined (_WIN32)
+		"VK_KHR_win32_surface",
+#elif defined (__linux__)
+		"VK_KHR_xcb_surface",
+#endif
+	};
+
+	//Application info for creating the instance
+	const VkApplicationInfo appInfo = {
+		.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
+		.pNext = nullptr,
+		.pApplicationName = "TomTek-App",
+		.applicationVersion = VK_MAKE_VERSION( 1, 0, 0 ),
+		.pEngineName = "TomTek-Engine",
+		.engineVersion = VK_MAKE_VERSION( 1, 0, 0 ),
+		.apiVersion = VK_API_VERSION_1_2, //MOST IMPORTANT FIELD!
+	};
+
+
+}
+
+#endif

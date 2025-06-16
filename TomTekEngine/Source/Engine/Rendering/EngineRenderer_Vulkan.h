@@ -28,11 +28,26 @@
 
 #if defined (_WIN32) || defined(__linux__)
 
+#include <vulkan/vulkan.h>
 #include "EngineRenderer.h"
 
 class EngineRenderer_Vulkan : public EngineRenderer
 {
+public:
+	EngineRenderer_Vulkan();
+	~EngineRenderer_Vulkan();
 
+protected:
+	/**
+	 * Used	to see if the renderer is still online and is available to render.
+	 * This is meant to be overwritten by the inheritted class
+	 */
+	virtual bool IsOkay() override { return m_RendererOnline; }
+	
+	void CreateMemberInstance();
+
+private:
+	VkInstance m_Instance;
 };
 
-#endif //__USING_VULKAN__
+#endif
