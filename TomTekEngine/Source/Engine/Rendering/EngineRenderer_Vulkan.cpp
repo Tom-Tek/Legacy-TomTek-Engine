@@ -197,6 +197,10 @@ void EngineRenderer_Vulkan::CreateDebugCallback()
 
 void EngineRenderer_Vulkan::CreateSurface( EngineWindow* engineWindow )
 {
+	if ( !engineWindow )
+	{
+		throw std::runtime_error( "EngineRenderer_Vulkan requires address to EngineWindow to create surface." );
+	}
 
 #if defined (_WIN32)
 

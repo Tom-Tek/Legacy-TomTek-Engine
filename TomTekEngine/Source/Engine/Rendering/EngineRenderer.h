@@ -48,6 +48,8 @@ public:
 	/**
 	 * Called right after construction has been completed. The EngineCore passed
 	 * will be the engine which both manages all the needed components for the game to be displayed.
+	 * 
+	 * @param engineWindow "The window which the renderer will be rendering to (Renderer must account for different OS windows)"
 	*/
 	virtual void Initialize( EngineWindow* engineWindow ) = 0;
 
@@ -55,7 +57,7 @@ public:
 	 * Used	to see if the renderer is still online and is available to render.
 	 * This is meant to be overwritten by the inheritted class
 	 */
-	virtual bool IsOkay() { return false; }
+	virtual bool IsOkay() { return m_RendererOnline; }
 
 protected:
 	bool m_RendererOnline;

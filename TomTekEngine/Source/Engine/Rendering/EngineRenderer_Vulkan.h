@@ -54,6 +54,12 @@ public:
 	~EngineRenderer_Vulkan();
 
 public:
+	/**
+	 * Called right after construction has been completed. The EngineCore passed
+	 * will be the engine which both manages all the needed components for the game to be displayed.
+	 * 
+	 * @param engineWindow "The window which the renderer will be rendering to (Renderer must account for different OS windows)"
+	 */
 	virtual void Initialize( EngineWindow* engineWindow ) override;
 
 protected:
@@ -75,7 +81,10 @@ protected:
 	 */
 	void CreateDebugCallback();
 	/**
-	 * Creates a VkSurfaceKHR from a given
+	 * Creates a VkSurfaceKHR from a given EngineWindow. If engine window is null this method
+	 * will throw an exception due to missing surface.
+	 * 
+	 * @param engineWindow "The window which this surface will be created for."
 	 */
 	void CreateSurface( EngineWindow* engineWindow );
 
