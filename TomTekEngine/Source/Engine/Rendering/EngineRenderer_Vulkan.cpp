@@ -30,7 +30,7 @@
 
 #include "EngineRenderer_Vulkan.h"
 
-#include "Engine/EngineCore.h"
+#include "Engine/Window/EngineWindow.h"
 #include "Engine/Window/EngineWindow_Win32.h"
 
 #include "Utilities/Helpers.hpp"
@@ -98,11 +98,11 @@ EngineRenderer_Vulkan::~EngineRenderer_Vulkan()
 	vkDestroyInstance( m_Instance, nullptr );
 }
 
-void EngineRenderer_Vulkan::Initialize( EngineCore* engineCore )
+void EngineRenderer_Vulkan::Initialize( EngineWindow* engineWindow )
 {
 	CreateMemberInstance();
 	CreateDebugCallback();
-	CreateSurface( engineCore );
+	CreateSurface( engineWindow );
 }
 
 void EngineRenderer_Vulkan::CreateMemberInstance()
@@ -195,7 +195,7 @@ void EngineRenderer_Vulkan::CreateDebugCallback()
 	Helpers::Log( "Vulkan Debug Messenger created ok." );
 }
 
-void EngineRenderer_Vulkan::CreateSurface( EngineCore* engineCore )
+void EngineRenderer_Vulkan::CreateSurface( EngineWindow* engineWindow )
 {
 
 #if defined (_WIN32)
@@ -203,8 +203,8 @@ void EngineRenderer_Vulkan::CreateSurface( EngineCore* engineCore )
 	//WINDOWS SURFACE IMPLEMENTATION
 	VkWin32SurfaceCreateInfoKHR createInfo = {
 		.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR,
-		.hinstance = ( ( EngineWindow_Win32* ) engineCore->GetWindow() )->GetHInstance(),
-		.hwnd = ( ( EngineWindow_Win32* ) engineCore->GetWindow() )->GetHWND(),
+		.hinstance = ( ( EngineWindow_Win32* ) engineWindow )->GetHInstance(),
+		.hwnd = ( ( EngineWindow_Win32* ) engineWindow )->GetHWND(),
 	};
 
 	if ( vkCreateWin32SurfaceKHR( m_Instance, &createInfo, nullptr, &m_Surface ) != VK_SUCCESS )

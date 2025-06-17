@@ -45,7 +45,7 @@
 
 #include "EngineRenderer.h"
 
-class EngineCore;
+class EngineWindow;
 
 class EngineRenderer_Vulkan : public EngineRenderer
 {
@@ -54,7 +54,7 @@ public:
 	~EngineRenderer_Vulkan();
 
 public:
-	virtual void Initialize( EngineCore* engineCore ) override;
+	virtual void Initialize( EngineWindow* engineWindow ) override;
 
 protected:
 	/**
@@ -74,8 +74,10 @@ protected:
 	 * the creation of the messenger.
 	 */
 	void CreateDebugCallback();
-
-	void CreateSurface( EngineCore* engineCore );
+	/**
+	 * Creates a VkSurfaceKHR from a given
+	 */
+	void CreateSurface( EngineWindow* engineWindow );
 
 private:
 	VkInstance m_Instance;

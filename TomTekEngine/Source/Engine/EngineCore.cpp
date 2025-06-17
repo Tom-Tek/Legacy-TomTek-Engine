@@ -34,7 +34,7 @@ EngineCore::EngineCore( EngineWindow* window, EngineRenderer* renderer ) :
 {
 	if ( m_Renderer.get() )
 	{
-		m_Renderer->Initialize( this );
+		m_Renderer->Initialize( window );
 	}
 
 	m_EngineOnline = true;

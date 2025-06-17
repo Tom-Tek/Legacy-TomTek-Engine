@@ -28,7 +28,7 @@
 
 #include <iostream>
 
-class EngineCore;
+class EngineWindow;
 
 class EngineRenderer
 {
@@ -49,7 +49,7 @@ public:
 	 * Called right after construction has been completed. The EngineCore passed
 	 * will be the engine which both manages all the needed components for the game to be displayed.
 	*/
-	virtual void Initialize( EngineCore* engineCore ) = 0;
+	virtual void Initialize( EngineWindow* engineWindow ) = 0;
 
 	/**
 	 * Used	to see if the renderer is still online and is available to render.
