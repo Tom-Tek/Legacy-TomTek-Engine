@@ -41,5 +41,7 @@ int main( int argc, char* argv[] )
 		engineCore.UpdateEngine();
 	}
 
+	std::cin.get(); //yield idiot
+
 	return EXIT_SUCCESS;
 }

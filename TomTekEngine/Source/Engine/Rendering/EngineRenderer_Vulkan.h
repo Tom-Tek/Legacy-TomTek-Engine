@@ -28,14 +28,33 @@
 
 #if defined (_WIN32) || defined(__linux__)
 
+#if defined (_WIN32)
+	#define VK_USE_PLATFORM_WIN32_KHR
+#endif //_WIN32
+#if defined (__linux__)
+	#define VK_USE_PLATFORM_XLIB_KHR
+#endif //__linux__
+
 #include <vulkan/vulkan.h>
+#if defined (_WIN32)
+	#include <vulkan/vulkan_win32.h>
+#endif //_WIN32
+#if defined (__linux__)
+	#include <vulkan/vulkan_xlib.h>
+#endif //__linux__
+
 #include "EngineRenderer.h"
+
+class EngineCore;
 
 class EngineRenderer_Vulkan : public EngineRenderer
 {
 public:
 	EngineRenderer_Vulkan();
 	~EngineRenderer_Vulkan();
+
+public:
+	virtual void Initialize( EngineCore* engineCore ) override;
 
 protected:
 	/**
@@ -44,10 +63,24 @@ protected:
 	 */
 	virtual bool IsOkay() override { return m_RendererOnline; }
 	
+	/**
+	 * Called in constructor and is used to initialize member VkInstance m_Instance.
+	 * Extensions and validation layers are defined inside of this method.
+	*/
 	void CreateMemberInstance();
+	/**
+	 * Called to create and initialize the Debug Layer Callback.
+	 * Exception can be thrown if vulkan cannot find the correct memory address for
+	 * the creation of the messenger.
+	 */
+	void CreateDebugCallback();
+
+	void CreateSurface( EngineCore* engineCore );
 
 private:
 	VkInstance m_Instance;
+	VkDebugUtilsMessengerEXT m_DebugMessenger;
+	VkSurfaceKHR m_Surface;
 };
 
 #endif

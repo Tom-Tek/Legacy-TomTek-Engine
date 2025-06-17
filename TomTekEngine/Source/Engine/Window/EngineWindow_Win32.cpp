@@ -29,6 +29,8 @@
 #include <iostream>
 #include "EngineWindow_Win32.h"
 
+#include "Utilities/Helpers.hpp"
+
 LRESULT CALLBACK WindowProcess( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam )
 {
 	switch ( msg )
@@ -51,13 +53,12 @@ LRESULT CALLBACK WindowProcess( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 
 EngineWindow_Win32::EngineWindow_Win32( std::string winName, uint32_t width, uint32_t height ) :
 	EngineWindow( winName, width, height ),
-	m_Msg( {} )
+	m_Msg( {} ),
+	m_HInstance( GetModuleHandle( nullptr ) )
 {
-	HINSTANCE hInstance = GetModuleHandle( nullptr );
-
 	WNDCLASS wc = {};
 	wc.lpfnWndProc = WindowProcess;
-	wc.hInstance = hInstance;
+	wc.hInstance = m_HInstance;
 	wc.lpszClassName = L"Win32_UNIDENTIFIED";
 	wc.hbrBackground = (HBRUSH)( COLOR_WINDOW + 1 );
 	wc.hCursor = LoadCursor( nullptr, IDC_ARROW );
@@ -68,23 +69,23 @@ EngineWindow_Win32::EngineWindow_Win32( std::string winName, uint32_t width, uin
 		return;
 	}
 
-	HWND hwnd = CreateWindow(
+	m_HWND = CreateWindow(
 		wc.lpszClassName,
 		L"TomTek Engine Win32",
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT,
 		m_Width, m_Height,
-		nullptr, nullptr, hInstance, nullptr
+		nullptr, nullptr, m_HInstance, nullptr
 	);
 
-	if ( !hwnd )
+	if ( !m_HWND )
 	{
 		throw std::exception( "Window attempt creation failed! EngineWindow_Win32::EngineWindow_Win32" );
 		return;
 	}
 
-	ShowWindow( hwnd, SW_SHOW );
-	UpdateWindow( hwnd );
+	ShowWindow( m_HWND, SW_SHOW );
+	UpdateWindow( m_HWND );
 
 }
 

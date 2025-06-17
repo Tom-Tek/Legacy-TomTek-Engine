@@ -28,6 +28,8 @@
 
 #include <iostream>
 
+class EngineCore;
+
 class EngineRenderer
 {
 protected:
@@ -44,10 +46,16 @@ public:
 	static EngineRenderer* ManufactureRendererByOs();
 
 	/**
+	 * Called right after construction has been completed. The EngineCore passed
+	 * will be the engine which both manages all the needed components for the game to be displayed.
+	*/
+	virtual void Initialize( EngineCore* engineCore ) = 0;
+
+	/**
 	 * Used	to see if the renderer is still online and is available to render.
 	 * This is meant to be overwritten by the inheritted class
 	 */
-	virtual bool IsOkay() = 0;
+	virtual bool IsOkay() { return false; }
 
 protected:
 	bool m_RendererOnline;

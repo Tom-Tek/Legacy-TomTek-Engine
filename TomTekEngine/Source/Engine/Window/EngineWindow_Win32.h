@@ -39,8 +39,16 @@ public:
 public:
 	virtual bool PollWindowEvents() override;
 
+	/** Getter for m_HWND */
+	HWND GetHWND() const { return m_HWND; }
+	/** Getter for m_HInstance */
+	HINSTANCE GetHInstance() const { return m_HInstance; }
+
 private:
+	HINSTANCE m_HInstance;
+	HWND m_HWND;
 	MSG m_Msg;
+	
 
 };
 

@@ -37,9 +37,16 @@ public:
 	EngineCore( EngineWindow* window, EngineRenderer* renderer );
 
 public:
+	/** Checks to see if the engine is running */
 	bool IsEngineRunning();
 
+	/** Called every game update and updates the engine. */
 	void UpdateEngine();
+
+	/** Getter for m_Window */
+	EngineWindow* GetWindow() const { return m_Window.get(); }
+	/** Getter for m_Renderer */
+	EngineRenderer* GetRenderer() const { return m_Renderer.get(); }
 
 private:
 	bool m_EngineOnline = false;

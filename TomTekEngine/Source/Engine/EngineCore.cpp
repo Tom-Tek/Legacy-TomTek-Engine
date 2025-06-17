@@ -32,16 +32,25 @@ EngineCore::EngineCore( EngineWindow* window, EngineRenderer* renderer ) :
 	m_Window( std::unique_ptr<EngineWindow>( window ) ),
 	m_Renderer( std::unique_ptr<EngineRenderer>( renderer ))
 {
+	if ( m_Renderer.get() )
+	{
+		m_Renderer->Initialize( this );
+	}
 
 	m_EngineOnline = true;
 }
 
 bool EngineCore::IsEngineRunning()
 {
-	return m_EngineOnline && ( 
-		( m_Window && m_Window->PollWindowEvents() ) ||
-		( m_Renderer && m_Renderer->IsOkay() )
-	);
+	if ( !m_Window.get() ) { return false; }
+	if ( !m_Renderer.get() ) { return false; }
+
+	//If the window fails to poll events close the application
+	if ( !m_Window->PollWindowEvents() ) { return false; }
+	//If there is something wrong with the renderer close the application
+	if ( !m_Renderer->IsOkay() ) { return false; }
+
+	return m_EngineOnline;
 }
 
 void EngineCore::UpdateEngine()
