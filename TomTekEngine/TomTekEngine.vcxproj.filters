@@ -6,6 +6,7 @@
     <ClInclude Include="Source\Engine\EngineCore.h" />
     <ClInclude Include="Source\Engine\Rendering\EngineRenderer.h" />
     <ClInclude Include="Source\Engine\Rendering\EngineRenderer_Vulkan.h" />
+    <ClInclude Include="Source\Engine\Rendering\VkTomTek\VkTtPhysicalDevice.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Engine\Window\EngineWindow.cpp" />
@@ -14,5 +15,6 @@
     <ClCompile Include="Source\Engine\EngineCore.cpp" />
     <ClCompile Include="Source\Engine\Rendering\EngineRenderer.cpp" />
     <ClCompile Include="Source\Engine\Rendering\EngineRenderer_Vulkan.cpp" />
+    <ClCompile Include="Source\Engine\Rendering\VkTomTek\VkTtPhysicalDevice.cpp" />
   </ItemGroup>
 </Project>

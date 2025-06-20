@@ -87,6 +87,7 @@ EngineWindow_Win32::EngineWindow_Win32( std::string winName, uint32_t width, uin
 	ShowWindow( m_HWND, SW_SHOW );
 	UpdateWindow( m_HWND );
 
+	Helpers::Log( "Creation of EngineWindow_Win32 ok. %s", "HelloWorld" );
 }
 
 bool EngineWindow_Win32::PollWindowEvents()

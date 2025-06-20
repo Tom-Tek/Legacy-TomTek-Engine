@@ -27,25 +27,35 @@
 #pragma once
 
 #include <iostream>
+#include <format>
+
+#ifdef NDEBUG
+	#define ASSERT( condition, ... ) ( ( void ) 0 )
+#else
+	#define ASSERT( condition, ... ) ( ( void ) 0 ) //todo, write a damn assert macro
+#endif
 
 class Helpers
 {
 
 public:
 
-	static void Log( std::string log )
+	template<typename... T>
+	static void Log( std::format_string<T...> fmt, T&&... args )
 	{
-		std::cout << "[LOG]: " << log << "\n";
+		std::cout << "[LOG]: " << std::format( fmt, std::forward<T>( args )... ) << "\n";
 	}
 
-	static void Warn( std::string warning )
+	template<typename... T>
+	static void Warn( std::format_string<T...> fmt, T&&... args )
 	{
-		std::cerr << "[WARN]: " << warning << "\n";
+		std::cerr << "[WARN]: " << std::format( fmt, std::forward<T>( args )... ) << "\n";
 	}
 
-	static void Error( std::string error )
+	template<typename... T>
+	static void Error( std::format_string<T...> fmt, T&&... args )
 	{
-		std::cerr << "[ERROR]: " << error << "\n";
+		std::cerr << "[ERROR]: " << std::format( fmt, std::forward<T>( args )... ) << "\n";
 	}
 
 };

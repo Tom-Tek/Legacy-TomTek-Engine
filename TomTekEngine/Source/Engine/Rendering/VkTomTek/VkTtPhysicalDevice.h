@@ -28,9 +28,40 @@
 
 #if defined (_WIN32) || defined (__linux__)
 
+#include <vector>
+#include <vulkan/vulkan.h>
 
+struct PhysicalDeviceStruct
+{
+	VkPhysicalDevice m_PhysDevice;
+	VkPhysicalDeviceProperties m_PhysDeviceProps;
 
+	std::vector<VkQueueFamilyProperties> m_QueueFamilyProps;
+	std::vector<VkBool32> m_QueueSupportsPresent;
+	std::vector<VkSurfaceFormatKHR> m_SurfaceFormats;
+	std::vector<VkPresentModeKHR> m_PresentModes;
 
+	VkSurfaceCapabilitiesKHR m_SurfaceCapabilities;
+	VkPhysicalDeviceMemoryProperties m_MemoryProps;
+};
 
+class VkTtPhysicalDevice
+{
+public:
+	VkTtPhysicalDevice() = default;
+	~VkTtPhysicalDevice() = default;
+
+public:
+	void Initialize( const VkInstance& instance, const VkSurfaceKHR& surface );
+
+	uint32_t PickDevice( VkQueueFlags queueType, bool supportsPresent );
+
+	const PhysicalDeviceStruct& Get() const;
+
+private:
+	std::vector<PhysicalDeviceStruct> m_Devices;
+	int m_DeviceIndex = -1;
+
+};
 
 #endif
