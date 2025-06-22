@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering">
+      <UniqueIdentifier>{E85EBB83-D457-DAD5-FD89-BF5AE9E1B9E1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Rendering\VkTomTek">
+      <UniqueIdentifier>{2C788D2A-983A-C1B4-E1EA-4F414DEC9992}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Window">
+      <UniqueIdentifier>{6210CB62-CED0-4699-970B-9016038B8B75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities">
+      <UniqueIdentifier>{010A8043-6D74-34BA-B6B2-E55F225C120F}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Engine\EngineCore.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\Rendering\EngineRenderer.h">
+      <Filter>Engine\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\Rendering\EngineRenderer_Vulkan.h">
+      <Filter>Engine\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\Rendering\VkTomTek\VkTtPhysicalDevice.h">
+      <Filter>Engine\Rendering\VkTomTek</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\Window\EngineWindow.h">
+      <Filter>Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\Window\EngineWindow_Win32.h">
+      <Filter>Engine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utilities\Helpers.hpp">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Engine\EngineCore.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\Rendering\EngineRenderer.cpp">
+      <Filter>Engine\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\Rendering\EngineRenderer_Vulkan.cpp">
+      <Filter>Engine\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\Rendering\VkTomTek\VkTtPhysicalDevice.cpp">
+      <Filter>Engine\Rendering\VkTomTek</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\Window\EngineWindow.cpp">
+      <Filter>Engine\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\Window\EngineWindow_Win32.cpp">
+      <Filter>Engine\Window</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

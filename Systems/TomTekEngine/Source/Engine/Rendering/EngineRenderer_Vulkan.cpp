@@ -42,21 +42,8 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL ValidationDebugCallback(
 	void* userData
 ) 
 {
-	switch ( messageSeverity )
-	{
-
-	default:
-		Helpers::Log( callbackData->pMessage);
-		break;
-
-	case VK_DEBUG_REPORT_WARNING_BIT_EXT:
-		Helpers::Warn( callbackData->pMessage );
-		break;
-
-	case VK_DEBUG_REPORT_ERROR_BIT_EXT:
-		Helpers::Error( callbackData->pMessage );
-		break;
-	}
+	std::cout << "Validation error " << messageSeverity << ", " << messageType << "\n";
+	std::cout << "\t" << callbackData->pMessage << "\n";
 
 	return VK_FALSE; //Never abort for now
 }
