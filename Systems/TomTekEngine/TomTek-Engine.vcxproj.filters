@@ -27,7 +27,7 @@
     <ClInclude Include="Source\Engine\Rendering\EngineRenderer_Vulkan.h">
       <Filter>Engine\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Engine\Rendering\VkTomTek\VkTtPhysicalDevice.h">
+    <ClInclude Include="Source\Engine\Rendering\VkTomTek\VkTtPhysicalDevices.h">
       <Filter>Engine\Rendering\VkTomTek</Filter>
     </ClInclude>
     <ClInclude Include="Source\Engine\Window\EngineWindow.h">
@@ -50,7 +50,7 @@
     <ClCompile Include="Source\Engine\Rendering\EngineRenderer_Vulkan.cpp">
       <Filter>Engine\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Engine\Rendering\VkTomTek\VkTtPhysicalDevice.cpp">
+    <ClCompile Include="Source\Engine\Rendering\VkTomTek\VkTtPhysicalDevices.cpp">
       <Filter>Engine\Rendering\VkTomTek</Filter>
     </ClCompile>
     <ClCompile Include="Source\Engine\Window\EngineWindow.cpp">

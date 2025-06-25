@@ -45,15 +45,15 @@ struct PhysicalDeviceStruct
 	VkPhysicalDeviceMemoryProperties m_MemoryProps;
 };
 
-class VkTtPhysicalDevice
+class VkTtPhysicalDevices
 {
 public:
-	VkTtPhysicalDevice() = default;
-	~VkTtPhysicalDevice() = default;
+	VkTtPhysicalDevices() = default;
+	~VkTtPhysicalDevices() = default;
 
 public:
 	void Initialize( const VkInstance& instance, const VkSurfaceKHR& surface );
-
+	
 	uint32_t PickDevice( VkQueueFlags queueType, bool supportsPresent );
 
 	const PhysicalDeviceStruct& Get() const;

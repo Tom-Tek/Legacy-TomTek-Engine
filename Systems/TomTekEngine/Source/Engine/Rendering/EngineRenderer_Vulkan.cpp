@@ -42,7 +42,8 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL ValidationDebugCallback(
 	void* userData
 ) 
 {
-	std::cout << "Validation error " << messageSeverity << ", " << messageType << "\n";
+	//Helpers::Log sucks and i'm not using it here
+	std::cout << "Validation error: " << messageSeverity << ", " << messageType << "\n";
 	std::cout << "\t" << callbackData->pMessage << "\n";
 
 	return VK_FALSE; //Never abort for now
@@ -90,6 +91,9 @@ void EngineRenderer_Vulkan::Initialize( EngineWindow* engineWindow )
 	CreateMemberInstance();
 	CreateDebugCallback();
 	CreateSurface( engineWindow );
+	
+	InitializePhysicalDevices();
+	CreateDevice();
 }
 
 void EngineRenderer_Vulkan::CreateMemberInstance()
@@ -214,6 +218,17 @@ void EngineRenderer_Vulkan::CreateSurface( EngineWindow* engineWindow )
 
 #endif //__linux__
 
+}
+
+void EngineRenderer_Vulkan::InitializePhysicalDevices()
+{
+	m_PhysicalDevices.Initialize( m_Instance, m_Surface );
+	m_QueueFamilyIndex = m_PhysicalDevices.PickDevice( VK_QUEUE_GRAPHICS_BIT, true );
+}
+
+void EngineRenderer_Vulkan::CreateDevice()
+{
+	
 }
 
 #endif

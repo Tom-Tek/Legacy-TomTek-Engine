@@ -44,6 +44,7 @@
 #endif //__linux__
 
 #include "EngineRenderer.h"
+#include "VkTomTek/VkTtPhysicalDevices.h"
 
 class EngineWindow;
 
@@ -88,10 +89,17 @@ protected:
 	 */
 	void CreateSurface( EngineWindow* engineWindow );
 
+	void InitializePhysicalDevices();
+
+	void CreateDevice();
+
 private:
 	VkInstance m_Instance;
 	VkDebugUtilsMessengerEXT m_DebugMessenger;
 	VkSurfaceKHR m_Surface;
+
+	VkTtPhysicalDevices m_PhysicalDevices;
+	uint32_t m_QueueFamilyIndex = 0;
 };
 
 #endif

@@ -27,11 +27,11 @@
 #if defined (_WIN32) || defined (__linux__)
 
 #include <iostream>
-#include "VkTtPhysicalDevice.h"
+#include "VkTtPhysicalDevices.h"
 
 #include "Utilities/Helpers.hpp"
 
-void VkTtPhysicalDevice::Initialize( const VkInstance& instance, const VkSurfaceKHR& surface )
+void VkTtPhysicalDevices::Initialize( const VkInstance& instance, const VkSurfaceKHR& surface )
 {
 	//Start off by gathering the number of physical devices available from vulkan
 	//After getting all devices resize the m_Devices vector
@@ -41,7 +41,7 @@ void VkTtPhysicalDevice::Initialize( const VkInstance& instance, const VkSurface
 		throw std::runtime_error( "Fatal error! vkEnumeratePhysicalDevices failed. [0]" );
 	}
 
-	Helpers::Log( "Vulkan PhysicalDevice's found: %d", deviceCount );
+	Helpers::Log( "Vulkan PhysicalDevice's found: {}", deviceCount );
 
 	m_Devices.resize( deviceCount );
 
@@ -63,8 +63,8 @@ void VkTtPhysicalDevice::Initialize( const VkInstance& instance, const VkSurface
 
 		uint32_t apiVersion = m_Devices[i].m_PhysDeviceProps.apiVersion;
 
-		Helpers::Log( "Device name: %s", m_Devices[i].m_PhysDeviceProps.deviceName );
-		Helpers::Log( "\tAPI version: %d.%d.%d.%d",
+		Helpers::Log( "Device name: {}", m_Devices[i].m_PhysDeviceProps.deviceName );
+		Helpers::Log( "\tAPI version: {}.{}.{}.{}",
 			VK_API_VERSION_VARIANT( apiVersion ),
 			VK_API_VERSION_MAJOR( apiVersion ),
 			VK_API_VERSION_MINOR( apiVersion ),
@@ -76,7 +76,7 @@ void VkTtPhysicalDevice::Initialize( const VkInstance& instance, const VkSurface
 		uint32_t queueFamilyCount = 0;
 		vkGetPhysicalDeviceQueueFamilyProperties( physDevice, &queueFamilyCount, nullptr );
 
-		Helpers::Log( "\t# of family queues: %d", queueFamilyCount );
+		Helpers::Log( "\t# of family queues: {}", queueFamilyCount );
 
 		m_Devices[ i ].m_QueueFamilyProps.resize( queueFamilyCount );
 		m_Devices[ i ].m_QueueSupportsPresent.resize( queueFamilyCount );
@@ -88,11 +88,11 @@ void VkTtPhysicalDevice::Initialize( const VkInstance& instance, const VkSurface
 		{
 			const VkQueueFamilyProperties& queueFamilyProps = m_Devices[ i ].m_QueueFamilyProps[ x ];
 
-			Helpers::Log( "\t\tFamily [%d]; Queue count: %d", x, queueFamilyProps.queueCount );
+			Helpers::Log( "\t\tFamily [{}]; Queue count: {}", x, queueFamilyProps.queueCount );
 			
 			VkQueueFlags flags = queueFamilyProps.queueFlags;
 			Helpers::Log( 
-				"\t\tGFX [%s]. Compute [%s], Transfer [%s], Sparce Binding [%s]",
+				"\t\tGFX [{}]. Compute [{}], Transfer [{}], Sparce Binding [{}]",
 				( flags & VK_QUEUE_GRAPHICS_BIT ) ? "ON" : "OFF",
 				( flags & VK_QUEUE_COMPUTE_BIT ) ? "ON" : "OFF",
 				( flags & VK_QUEUE_TRANSFER_BIT ) ? "ON" : "OFF",
@@ -139,7 +139,7 @@ void VkTtPhysicalDevice::Initialize( const VkInstance& instance, const VkSurface
 		ASSERT( presentModesCount > 0, "No presentModesCount counted for");
 
 		m_Devices[ i ].m_PresentModes.resize( presentModesCount );
-		Helpers::Log( "# of Presentation Modes: %d", presentModesCount );
+		Helpers::Log( "# of Presentation Modes: {}", presentModesCount );
 
 		//Cache all presentation modes into this devices m_PresentModes vector
 		if ( vkGetPhysicalDeviceSurfacePresentModesKHR( physDevice, surface, &presentModesCount, m_Devices[i].m_PresentModes.data() ) != VK_SUCCESS )
@@ -149,13 +149,37 @@ void VkTtPhysicalDevice::Initialize( const VkInstance& instance, const VkSurface
 
 		//Cache all Physical Device Memory Properties in this devices m_MemoryProps vector
 		vkGetPhysicalDeviceMemoryProperties( physDevice, &( m_Devices[ i ].m_MemoryProps ));
-		Helpers::Log( "# of Memory Types: %d", m_Devices[i].m_MemoryProps.memoryTypeCount );
+		Helpers::Log( "# of Memory Types: {}", m_Devices[i].m_MemoryProps.memoryTypeCount );
+	}
+}
 
-		for ( uint32_t x = 0; x < m_Devices[i].m_MemoryProps.memoryTypeCount; x++ )
+uint32_t VkTtPhysicalDevices::PickDevice( VkQueueFlags queueType, bool supportsPresent )
+{
+	for ( uint32_t x = 0; x < m_Devices.size(); x++ )
+	{
+		for ( uint32_t y = 0; y < m_Devices[ x ].m_QueueFamilyProps.size(); y++ )
 		{
-
+			const VkQueueFamilyProperties& queueFamilyProps = m_Devices[ x ].m_QueueFamilyProps[ y ];
+			if ( ( queueFamilyProps.queueFlags & queueType ) && ( (bool) m_Devices[ x ].m_QueueSupportsPresent[ y ] == supportsPresent ) )
+			{
+				m_DeviceIndex = x;
+				return y;
+			}
 		}
 	}
+
+	Helpers::Error( "QueueType and supports present not found!\n" );
+
+	return 0;
+}
+
+const PhysicalDeviceStruct& VkTtPhysicalDevices::Get() const
+{
+	if ( m_DeviceIndex == -1 )
+	{
+		throw std::runtime_error( "No physical device has been selected yet." );
+	}
+	return m_Devices[ m_DeviceIndex ];
 }
 
 #endif
