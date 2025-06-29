@@ -52,12 +52,6 @@ namespace TomTekRendering::Vulkan
 		}
 
 		Helpers::Log( "VkInstance created." );
-
-#if !defined (NDEBUG)
-			
-		m_ValidationLayer = new ValidationLayer( this );
-
-#endif
 	}
 
 	Instance::~Instance()
