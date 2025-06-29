@@ -37,7 +37,8 @@
 namespace TomTekRendering::Vulkan 
 {
 
-	Surface::Surface( Instance* instance, EngineWindow* localWindow )
+	Surface::Surface( Instance* instance, EngineWindow* localWindow ) :
+		m_Instance( instance )
 	{
 		if ( !localWindow )
 		{
@@ -61,6 +62,11 @@ namespace TomTekRendering::Vulkan
 		Helpers::Log( "Vulkan Win32 SurfaceKHR created ok." );
 
 #endif
+	}
+
+	Surface::~Surface()
+	{
+		vkDestroySurfaceKHR( m_Instance->GetNative(), m_VkSurface, nullptr );
 	}
 
 }

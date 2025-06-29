@@ -44,7 +44,7 @@ namespace TomTekRendering::Vulkan
 	{
 	public:
 		Surface( Instance* instance, EngineWindow* localWindow );
-		~Surface() = default;
+		~Surface();
 
 	public:
 		VkSurfaceKHR GetNative() const { return m_VkSurface; }
@@ -52,5 +52,6 @@ namespace TomTekRendering::Vulkan
 
 	private:
 		VkSurfaceKHR m_VkSurface;
+		Instance* m_Instance;
 	};
 }
