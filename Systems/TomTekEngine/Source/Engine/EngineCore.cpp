@@ -25,18 +25,11 @@
 	Script Author: Liam Rousselle
 */
 #include "EngineCore.h"
-#include "Engine/Window/EngineWindow.h"
-#include "Engine/Rendering/EngineRenderer.h"
 
 EngineCore::EngineCore( EngineWindow* window, EngineRenderer* renderer ) :
 	m_Window( std::unique_ptr<EngineWindow>( window ) ),
 	m_Renderer( std::unique_ptr<EngineRenderer>( renderer ))
 {
-	if ( m_Renderer.get() )
-	{
-		m_Renderer->Initialize( window );
-	}
-
 	m_EngineOnline = true;
 }
 

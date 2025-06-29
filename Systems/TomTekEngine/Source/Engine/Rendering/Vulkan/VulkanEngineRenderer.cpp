@@ -24,36 +24,40 @@
 
 	Script Author: Liam Rousselle
 */
-#pragma once
+#include "VulkanEngineRenderer.h"
+#include "Engine/Window/EngineWindow.h"
+#include "Utilities/Helpers.hpp"
 
-#include <iostream>
-
-#include "Window/EngineWindow.h"
-#include "Rendering/EngineRenderer.h"
-
-using namespace TomTekRendering;
-
-class EngineCore final
+namespace TomTekRendering::Vulkan
 {
-public:
-	EngineCore( EngineWindow* window, EngineRenderer* renderer );
+	VulkanEngineRenderer::VulkanEngineRenderer( EngineWindow* localWindow ) :
+		EngineRenderer( localWindow )
+	{
+		if ( !localWindow )
+		{
+			throw std::runtime_error( "VulkanEngineRenderer constructor missing address for *localWindow" );
+		}
 
-public:
-	/** Checks to see if the engine is running */
-	bool IsEngineRunning();
+		const VkApplicationInfo applicationInfo = {
+			.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
+			.pNext = nullptr,
+			.pApplicationName = "TomTek-Vulkan",
+			.applicationVersion = VK_MAKE_VERSION( 1, 0, 0 ),
+			.pEngineName = "TomTek-Vulkan-Engine",
+			.engineVersion = VK_MAKE_VERSION( 1, 0, 0 ),
+			.apiVersion = VK_API_VERSION_1_2,
+		};
 
-	/** Called every game update and updates the engine. */
-	void UpdateEngine();
+		m_Instance = std::make_unique<Instance>( applicationInfo );
 
-	/** Getter for m_Window */
-	EngineWindow* GetWindow() const { return m_Window.get(); }
-	/** Getter for m_Renderer */
-	EngineRenderer* GetRenderer() const { return m_Renderer.get(); }
+#if !defined (NDEBUG)
+		m_ValidationLayer = std::make_unique<ValidationLayer>( m_Instance.get() );
+#endif
 
-private:
-	bool m_EngineOnline = false;
+		m_Surface = std::make_unique<Surface>( m_Instance.get(), localWindow );
 
-	std::unique_ptr<EngineWindow> m_Window;
-	std::unique_ptr<EngineRenderer> m_Renderer;
+		m_PhysicalDevices = std::make_unique<PhysicalDevices>( m_Instance.get(), m_Surface.get() );
+		m_QueueFamilyIndex = m_PhysicalDevices->PickDevice( VK_QUEUE_COMPUTE_BIT, true );
+	}
 
-};
+}

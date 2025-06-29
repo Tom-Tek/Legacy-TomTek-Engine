@@ -24,14 +24,11 @@
 
 	Script Author: Liam Rousselle
 */
-#if defined (_WIN32)
-
-#include <iostream>
-#include "EngineWindow_Win32.h"
-
+#include "WinEngineWindow.h"
+#include "Engine/Window/EngineWindow.h"
 #include "Utilities/Helpers.hpp"
 
-LRESULT CALLBACK WindowProcess( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam )
+static LRESULT CALLBACK WindowProcess( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam )
 {
 	switch ( msg )
 	{
@@ -51,7 +48,7 @@ LRESULT CALLBACK WindowProcess( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 	}
 }
 
-EngineWindow_Win32::EngineWindow_Win32( std::string winName, uint32_t width, uint32_t height ) :
+WinEngineWindow::WinEngineWindow( std::string winName, uint32_t width, uint32_t height ) :
 	EngineWindow( winName, width, height ),
 	m_Msg( {} ),
 	m_HInstance( GetModuleHandle( nullptr ) )
@@ -90,7 +87,7 @@ EngineWindow_Win32::EngineWindow_Win32( std::string winName, uint32_t width, uin
 	Helpers::Log( "Creation of EngineWindow_Win32 ok. %s", "HelloWorld" );
 }
 
-bool EngineWindow_Win32::PollWindowEvents()
+bool WinEngineWindow::PollWindowEvents()
 {
 	if ( !GetMessage( &m_Msg, nullptr, 0, 0 ) )
 	{
@@ -102,5 +99,3 @@ bool EngineWindow_Win32::PollWindowEvents()
 
 	return true;
 }
-
-#endif //_WIN32

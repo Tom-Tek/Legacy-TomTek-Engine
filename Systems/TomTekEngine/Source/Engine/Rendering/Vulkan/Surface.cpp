@@ -24,36 +24,43 @@
 
 	Script Author: Liam Rousselle
 */
-#pragma once
-
 #include <iostream>
 
-#include "Window/EngineWindow.h"
-#include "Rendering/EngineRenderer.h"
+#include "Surface.h"
+#include "Instance.h"
 
-using namespace TomTekRendering;
+#include "Engine/Window/EngineWindow.h"
+#include "Engine/Window/WinEngineWindow.h"
 
-class EngineCore final
+#include "Utilities/Helpers.hpp"
+
+namespace TomTekRendering::Vulkan 
 {
-public:
-	EngineCore( EngineWindow* window, EngineRenderer* renderer );
 
-public:
-	/** Checks to see if the engine is running */
-	bool IsEngineRunning();
+	Surface::Surface( Instance* instance, EngineWindow* localWindow )
+	{
+		if ( !localWindow )
+		{
+			throw std::runtime_error( "TomTekRendering::Vulkan::Surface requires address to EngineWindow to create surface." );
+		}
 
-	/** Called every game update and updates the engine. */
-	void UpdateEngine();
+#ifdef _WIN32
 
-	/** Getter for m_Window */
-	EngineWindow* GetWindow() const { return m_Window.get(); }
-	/** Getter for m_Renderer */
-	EngineRenderer* GetRenderer() const { return m_Renderer.get(); }
+		//WINDOWS SURFACE IMPLEMENTATION
+		VkWin32SurfaceCreateInfoKHR createInfo = {
+			.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR,
+			.hinstance = ( ( WinEngineWindow* ) localWindow )->GetHInstance(),
+			.hwnd = ( ( WinEngineWindow* ) localWindow )->GetHWND(),
+		};
 
-private:
-	bool m_EngineOnline = false;
+		if ( vkCreateWin32SurfaceKHR( instance->GetNative(), &createInfo, nullptr, &m_VkSurface) != VK_SUCCESS )
+		{
+			throw std::runtime_error( "vkCreateWin32SurfaceKHR failed to create m_VkSurface" );
+		}
 
-	std::unique_ptr<EngineWindow> m_Window;
-	std::unique_ptr<EngineRenderer> m_Renderer;
+		Helpers::Log( "Vulkan Win32 SurfaceKHR created ok." );
 
-};
+#endif
+	}
+
+}

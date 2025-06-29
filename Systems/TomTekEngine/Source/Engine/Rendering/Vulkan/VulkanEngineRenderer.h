@@ -27,33 +27,39 @@
 #pragma once
 
 #include <iostream>
+#include <vulkan/vulkan.h>
 
-#include "Window/EngineWindow.h"
-#include "Rendering/EngineRenderer.h"
+#include "Engine/Rendering/EngineRenderer.h"
 
-using namespace TomTekRendering;
+#include "Instance.h"
+#include "ValidationLayer.h"
+#include "Surface.h"
+#include "PhysicalDevices.h"
 
-class EngineCore final
+class EngineWindow;
+
+namespace TomTekRendering::Vulkan
 {
-public:
-	EngineCore( EngineWindow* window, EngineRenderer* renderer );
+	/**
+	 * README!
+	 * VulkanEngineRenderer class assumes that the caller has already done neccessary OS checks
+	 * Be aware of the possibility this header is accidentally included on builds of TomTekEngine which
+	 * do not support vulkan!
+	 */
+	class VulkanEngineRenderer final : public EngineRenderer
+	{
+	public:
+		VulkanEngineRenderer( EngineWindow* localWindow );
+		~VulkanEngineRenderer() = default;
+		
+	private:
+		std::unique_ptr<Instance> m_Instance = nullptr;
+		std::unique_ptr<Surface> m_Surface = nullptr;
+		std::unique_ptr<PhysicalDevices> m_PhysicalDevices = nullptr;
 
-public:
-	/** Checks to see if the engine is running */
-	bool IsEngineRunning();
+		std::unique_ptr<ValidationLayer> m_ValidationLayer = nullptr;
 
-	/** Called every game update and updates the engine. */
-	void UpdateEngine();
+		uint32_t m_QueueFamilyIndex = -1;
 
-	/** Getter for m_Window */
-	EngineWindow* GetWindow() const { return m_Window.get(); }
-	/** Getter for m_Renderer */
-	EngineRenderer* GetRenderer() const { return m_Renderer.get(); }
-
-private:
-	bool m_EngineOnline = false;
-
-	std::unique_ptr<EngineWindow> m_Window;
-	std::unique_ptr<EngineRenderer> m_Renderer;
-
+	};
 };

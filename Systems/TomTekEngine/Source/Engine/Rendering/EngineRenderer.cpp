@@ -27,29 +27,38 @@
 #include "EngineRenderer.h"
 #include "Utilities/Helpers.hpp"
 
-#if defined (_WIN32) || defined (__linux__)
-    #include "EngineRenderer_Vulkan.h"
+#ifdef USING_VULKAN
+    #include "Vulkan/VulkanEngineRenderer.h"
+#elif USING_METAL
+    //TODO: Get MacOS so I can implement Metal rendering
 #endif
 
-EngineRenderer::EngineRenderer()
+namespace TomTekRendering 
 {
 
-    m_RendererOnline = true;
-}
+#ifdef USING_VULKAN
+    using namespace Vulkan;
+#endif
 
-EngineRenderer* EngineRenderer::ManufactureRendererByOs()
-{
+    EngineRenderer::EngineRenderer( EngineWindow* localWindow )
+    {
+        m_RendererOnline = true;
+    }
 
-#if defined (_WIN32) || defined(__linux__)
+    EngineRenderer* EngineRenderer::ManufactureRendererByOs( EngineWindow* localWindow )
+    {
+        if ( !localWindow )
+        {
+            throw std::runtime_error( "No window was given for renderer." );
+        }
 
-    return new EngineRenderer_Vulkan();
-
-#elif defined (__APPLE__)
-
-    
+#ifdef USING_VULKAN
+        return new VulkanEngineRenderer( localWindow );
+#elif USING_METAL
 
 #endif
 
-    
-    return nullptr;
+        throw std::runtime_error( "Operating system is not supported by TomTek renderer" );
+        return nullptr;
+    }
 }

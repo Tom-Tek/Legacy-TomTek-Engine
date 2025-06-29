@@ -25,16 +25,15 @@
 	Script Author: Liam Rousselle
 */
 #pragma once
-#if defined (_WIN32)
 
 #include <Windows.h>
 #include "EngineWindow.h"
 
-class EngineWindow_Win32 : public EngineWindow
+class WinEngineWindow final : public EngineWindow
 {
 
 public:
-	EngineWindow_Win32( std::string winName, uint32_t width, uint32_t height );
+	WinEngineWindow( std::string winName, uint32_t width, uint32_t height );
 
 public:
 	virtual bool PollWindowEvents() override;
@@ -51,5 +50,3 @@ private:
 	
 
 };
-
-#endif //_WIN32

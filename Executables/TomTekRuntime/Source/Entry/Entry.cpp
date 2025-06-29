@@ -33,7 +33,7 @@
 int main( int argc, char* argv[] )
 {
 	EngineWindow* gameWindow = EngineWindow::ManufactureWindowByOs( "My Window", 800, 600 );
-	EngineRenderer* gameRenderer = EngineRenderer::ManufactureRendererByOs();
+	EngineRenderer* gameRenderer = EngineRenderer::ManufactureRendererByOs( gameWindow );
 
 	EngineCore engineCore( gameWindow, gameRenderer );
 	while ( engineCore.IsEngineRunning() )

@@ -24,21 +24,19 @@
     <ClInclude Include="Source\Engine\Rendering\EngineRenderer.h">
       <Filter>Engine\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Engine\Rendering\EngineRenderer_Vulkan.h">
-      <Filter>Engine\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Engine\Rendering\VkTomTek\VkTtPhysicalDevices.h">
-      <Filter>Engine\Rendering\VkTomTek</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Engine\Window\EngineWindow.h">
       <Filter>Engine\Window</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Engine\Window\EngineWindow_Win32.h">
+    <ClInclude Include="Source\Engine\Window\WinEngineWindow.h">
       <Filter>Engine\Window</Filter>
     </ClInclude>
     <ClInclude Include="Source\Utilities\Helpers.hpp">
       <Filter>Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Engine\Rendering\Vulkan\Instance.h" />
+    <ClInclude Include="Source\Engine\Rendering\Vulkan\ValidationLayer.h" />
+    <ClInclude Include="Source\Engine\Rendering\Vulkan\Surface.h" />
+    <ClInclude Include="Source\Engine\Rendering\Vulkan\PhysicalDevices.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Engine\EngineCore.cpp">
@@ -47,17 +45,17 @@
     <ClCompile Include="Source\Engine\Rendering\EngineRenderer.cpp">
       <Filter>Engine\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Engine\Rendering\EngineRenderer_Vulkan.cpp">
-      <Filter>Engine\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Engine\Rendering\VkTomTek\VkTtPhysicalDevices.cpp">
-      <Filter>Engine\Rendering\VkTomTek</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Engine\Window\EngineWindow.cpp">
       <Filter>Engine\Window</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Engine\Window\EngineWindow_Win32.cpp">
+    <ClCompile Include="Source\Engine\Window\WinEngineWindow.cpp">
       <Filter>Engine\Window</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Engine\Rendering\Vulkan\VulkanEngineRenderer.h" />
+    <ClCompile Include="Source\Engine\Rendering\Vulkan\VulkanEngineRenderer.cpp" />
+    <ClCompile Include="Source\Engine\Rendering\Vulkan\Instance.cpp" />
+    <ClCompile Include="Source\Engine\Rendering\Vulkan\ValidationLayer.cpp" />
+    <ClCompile Include="Source\Engine\Rendering\Vulkan\Surface.cpp" />
+    <ClCompile Include="Source\Engine\Rendering\Vulkan\PhysicalDevices.cpp" />
   </ItemGroup>
 </Project>

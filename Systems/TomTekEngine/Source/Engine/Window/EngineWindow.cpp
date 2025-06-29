@@ -27,9 +27,9 @@
 #include "EngineWindow.h"
 #include "Utilities/Helpers.hpp"
 
-#if defined(_WIN32)
-    #include "EngineWindow_Win32.h"
-#endif //_WIN32
+#ifdef _WIN32
+#include "WinEngineWindow.h"
+#endif
 
 EngineWindow::EngineWindow( std::string winName, uint32_t width, uint32_t height ) :
     m_Width( width ),
@@ -43,7 +43,7 @@ EngineWindow* EngineWindow::ManufactureWindowByOs( std::string winName, uint32_t
 
 #if defined(_WIN32)
 
-    return new EngineWindow_Win32( winName, width, height );
+    return new WinEngineWindow( winName, width, height );
 
 #elif defined(__linux__)
 

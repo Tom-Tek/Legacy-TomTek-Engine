@@ -26,34 +26,42 @@
 */
 #pragma once
 
-#include <iostream>
+#include <vector>
+#include <vulkan/vulkan.h>
 
-#include "Window/EngineWindow.h"
-#include "Rendering/EngineRenderer.h"
-
-using namespace TomTekRendering;
-
-class EngineCore final
+namespace TomTekRendering::Vulkan 
 {
-public:
-	EngineCore( EngineWindow* window, EngineRenderer* renderer );
+	class Instance;
+	class Surface;
 
-public:
-	/** Checks to see if the engine is running */
-	bool IsEngineRunning();
+	struct PhysicalDevice
+	{
+		VkPhysicalDevice m_PhysDevice;
+		VkPhysicalDeviceProperties m_PhysDeviceProps;
 
-	/** Called every game update and updates the engine. */
-	void UpdateEngine();
+		std::vector<VkQueueFamilyProperties> m_QueueFamilyProps;
+		std::vector<VkBool32> m_QueueSupportsPresent;
+		std::vector<VkSurfaceFormatKHR> m_SurfaceFormats;
+		std::vector<VkPresentModeKHR> m_PresentModes;
 
-	/** Getter for m_Window */
-	EngineWindow* GetWindow() const { return m_Window.get(); }
-	/** Getter for m_Renderer */
-	EngineRenderer* GetRenderer() const { return m_Renderer.get(); }
+		VkSurfaceCapabilitiesKHR m_SurfaceCapabilities;
+		VkPhysicalDeviceMemoryProperties m_MemoryProps;
+	};
 
-private:
-	bool m_EngineOnline = false;
+	class PhysicalDevices final
+	{
+	public:
+		PhysicalDevices( const Instance* instance, const Surface* surface );
+		~PhysicalDevices() = default;
 
-	std::unique_ptr<EngineWindow> m_Window;
-	std::unique_ptr<EngineRenderer> m_Renderer;
+	public:
+		uint32_t PickDevice( const VkQueueFlags& queueType, const bool supportsPresent );
 
-};
+		int GetDeviceIndex() const;
+
+	private:
+		std::vector<PhysicalDevice> m_Devices;
+
+		int m_DeviceIndex = -1; //if -1, that means no device has been selected
+	};
+}

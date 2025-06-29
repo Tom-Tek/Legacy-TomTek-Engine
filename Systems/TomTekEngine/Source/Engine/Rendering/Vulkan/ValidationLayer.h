@@ -26,34 +26,31 @@
 */
 #pragma once
 
-#include <iostream>
+#include <vector>
+#include <vulkan/vulkan.h>
 
-#include "Window/EngineWindow.h"
-#include "Rendering/EngineRenderer.h"
-
-using namespace TomTekRendering;
-
-class EngineCore final
+namespace TomTekRendering::Vulkan
 {
-public:
-	EngineCore( EngineWindow* window, EngineRenderer* renderer );
+	class Instance;
 
-public:
-	/** Checks to see if the engine is running */
-	bool IsEngineRunning();
+	class ValidationLayer final
+	{
+	public:
+		ValidationLayer( Instance* instance );
+		~ValidationLayer();
 
-	/** Called every game update and updates the engine. */
-	void UpdateEngine();
+	public:
+		VkDebugUtilsMessengerEXT GetNative() const { return m_DebugMessenger; }
+		operator VkDebugUtilsMessengerEXT() const { return m_DebugMessenger; }
 
-	/** Getter for m_Window */
-	EngineWindow* GetWindow() const { return m_Window.get(); }
-	/** Getter for m_Renderer */
-	EngineRenderer* GetRenderer() const { return m_Renderer.get(); }
+	public:
+		inline static std::vector<const char*> k_ValidationLayers = {
+			"VK_LAYER_KHRONOS_validation",
+		};
 
-private:
-	bool m_EngineOnline = false;
+	private:
+		Instance* m_Instance;
+		VkDebugUtilsMessengerEXT m_DebugMessenger;
 
-	std::unique_ptr<EngineWindow> m_Window;
-	std::unique_ptr<EngineRenderer> m_Renderer;
-
-};
+	};
+}

@@ -26,42 +26,31 @@
 */
 #pragma once
 
-#if defined (_WIN32) || defined (__linux__)
+#ifdef _WIN32
+	#define VK_USE_PLATFORM_WIN32_KHR
+#elif __linux__
+	#define VK_USE_PLATFORM_XLIB_KHR
+#endif
 
-#include <vector>
 #include <vulkan/vulkan.h>
 
-struct PhysicalDeviceStruct
+class EngineWindow;
+
+namespace TomTekRendering::Vulkan 
 {
-	VkPhysicalDevice m_PhysDevice;
-	VkPhysicalDeviceProperties m_PhysDeviceProps;
+	class Instance;
 
-	std::vector<VkQueueFamilyProperties> m_QueueFamilyProps;
-	std::vector<VkBool32> m_QueueSupportsPresent;
-	std::vector<VkSurfaceFormatKHR> m_SurfaceFormats;
-	std::vector<VkPresentModeKHR> m_PresentModes;
+	class Surface final
+	{
+	public:
+		Surface( Instance* instance, EngineWindow* localWindow );
+		~Surface() = default;
 
-	VkSurfaceCapabilitiesKHR m_SurfaceCapabilities;
-	VkPhysicalDeviceMemoryProperties m_MemoryProps;
-};
+	public:
+		VkSurfaceKHR GetNative() const { return m_VkSurface; }
+		operator VkSurfaceKHR() const { return m_VkSurface; }
 
-class VkTtPhysicalDevices
-{
-public:
-	VkTtPhysicalDevices() = default;
-	~VkTtPhysicalDevices() = default;
-
-public:
-	void Initialize( const VkInstance& instance, const VkSurfaceKHR& surface );
-	
-	uint32_t PickDevice( VkQueueFlags queueType, bool supportsPresent );
-
-	const PhysicalDeviceStruct& Get() const;
-
-private:
-	std::vector<PhysicalDeviceStruct> m_Devices;
-	int m_DeviceIndex = -1;
-
-};
-
-#endif
+	private:
+		VkSurfaceKHR m_VkSurface;
+	};
+}

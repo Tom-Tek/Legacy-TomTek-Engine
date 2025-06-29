@@ -24,36 +24,44 @@
 
 	Script Author: Liam Rousselle
 */
-#pragma once
-
 #include <iostream>
 
-#include "Window/EngineWindow.h"
-#include "Rendering/EngineRenderer.h"
+#include "Instance.h"
+#include "ValidationLayer.h"
 
-using namespace TomTekRendering;
+#include "Utilities/Helpers.hpp"
 
-class EngineCore final
+namespace TomTekRendering::Vulkan
 {
-public:
-	EngineCore( EngineWindow* window, EngineRenderer* renderer );
+	Instance::Instance( const VkApplicationInfo applicationInfo )
+	{
+		const VkInstanceCreateInfo createInfo = {
+			.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
+			.pNext = nullptr,
+			.flags = 0,
+			.pApplicationInfo = &applicationInfo,
+			.enabledLayerCount = (uint32_t) ValidationLayer::k_ValidationLayers.size(),
+			.ppEnabledLayerNames = ValidationLayer::k_ValidationLayers.data(),
+			.enabledExtensionCount = (uint32_t) k_Extensions.size(),
+			.ppEnabledExtensionNames = k_Extensions.data()
+		};
 
-public:
-	/** Checks to see if the engine is running */
-	bool IsEngineRunning();
+		if ( vkCreateInstance( &createInfo, nullptr, &m_VkInstance ) != VK_SUCCESS )
+		{
+			throw std::runtime_error( "vkCreateInstance failed to create m_Instance!" );
+		}
 
-	/** Called every game update and updates the engine. */
-	void UpdateEngine();
+		Helpers::Log( "VkInstance created." );
 
-	/** Getter for m_Window */
-	EngineWindow* GetWindow() const { return m_Window.get(); }
-	/** Getter for m_Renderer */
-	EngineRenderer* GetRenderer() const { return m_Renderer.get(); }
+#if !defined (NDEBUG)
+			
+		m_ValidationLayer = new ValidationLayer( this );
 
-private:
-	bool m_EngineOnline = false;
+#endif
+	}
 
-	std::unique_ptr<EngineWindow> m_Window;
-	std::unique_ptr<EngineRenderer> m_Renderer;
-
-};
+	Instance::~Instance()
+	{
+		vkDestroyInstance( m_VkInstance, nullptr );
+	}
+}

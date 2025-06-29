@@ -26,34 +26,41 @@
 */
 #pragma once
 
-#include <iostream>
+#include <vector>
+#include <vulkan/vulkan.h>
 
-#include "Window/EngineWindow.h"
-#include "Rendering/EngineRenderer.h"
-
-using namespace TomTekRendering;
-
-class EngineCore final
+namespace TomTekRendering::Vulkan
 {
-public:
-	EngineCore( EngineWindow* window, EngineRenderer* renderer );
+	class ValidationLayer;
 
-public:
-	/** Checks to see if the engine is running */
-	bool IsEngineRunning();
+	class Instance final
+	{
+	public:
+		Instance( const VkApplicationInfo applicationInfo );
+		~Instance();
 
-	/** Called every game update and updates the engine. */
-	void UpdateEngine();
+	public:
+		VkInstance GetNative() const { return m_VkInstance; }
+		operator VkInstance() const { return m_VkInstance; }
 
-	/** Getter for m_Window */
-	EngineWindow* GetWindow() const { return m_Window.get(); }
-	/** Getter for m_Renderer */
-	EngineRenderer* GetRenderer() const { return m_Renderer.get(); }
+	private:
+		VkInstance m_VkInstance = VK_NULL_HANDLE;
+			
+		ValidationLayer* m_ValidationLayer = nullptr;
 
-private:
-	bool m_EngineOnline = false;
+		const std::vector<const char*> k_Extensions = {
+			VK_KHR_SURFACE_EXTENSION_NAME,
 
-	std::unique_ptr<EngineWindow> m_Window;
-	std::unique_ptr<EngineRenderer> m_Renderer;
+			//DEBUG EXTENSIONS
+			VK_EXT_DEBUG_UTILS_EXTENSION_NAME,
 
-};
+			//OS SPECIFIC EXTENSION LAYERS
+			#ifdef _WIN32
+				"VK_KHR_win32_surface",
+			#elif __linux__
+				"VK_KHR_xcb_surface",
+			#endif
+		};
+
+	};
+}

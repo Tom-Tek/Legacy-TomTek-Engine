@@ -26,40 +26,41 @@
 */
 #pragma once
 
-#include <iostream>
-
 class EngineWindow;
 
-class EngineRenderer
+#ifdef _WIN32
+	#define USING_VULKAN
+#elif __linux__
+	#define USING_VULKAN
+#elif __APPLE__
+	#define USING_METAL
+#endif
+
+namespace TomTekRendering 
 {
-protected:
-	EngineRenderer();
+	class EngineRenderer
+	{
+	protected:
+		EngineRenderer( EngineWindow* localWindow );
 
-public:
-	/**
-	 * Responsible for creating a new renderer for the caller.
-	 * Type of renderer created depends on the operating system which this application
-	 * is running on.
-	 * For Windows & Linux the EngineRenderer_Vulkan will be created
-	 * For Apple the EngineRenderer_Metal will be created (renderer does not exist yet)
-	*/
-	static EngineRenderer* ManufactureRendererByOs();
+	public:
+		/**
+		 * Responsible for creating a new renderer for the caller.
+		 * Type of renderer created depends on the operating system which this application
+		 * is running on.
+		 * For Windows & Linux the EngineRenderer_Vulkan will be created
+		 * For Apple the EngineRenderer_Metal will be created (renderer does not exist yet)
+		*/
+		static EngineRenderer* ManufactureRendererByOs( EngineWindow* localWindow );
 
-	/**
-	 * Called right after construction has been completed. The EngineCore passed
-	 * will be the engine which both manages all the needed components for the game to be displayed.
-	 * 
-	 * @param engineWindow "The window which the renderer will be rendering to (Renderer must account for different OS windows)"
-	*/
-	virtual void Initialize( EngineWindow* engineWindow ) = 0;
+		/**
+		 * Used	to see if the renderer is still online and is available to render.
+		 * This is meant to be overwritten by the inheritted class
+		 */
+		virtual bool IsOkay() { return m_RendererOnline; }
 
-	/**
-	 * Used	to see if the renderer is still online and is available to render.
-	 * This is meant to be overwritten by the inheritted class
-	 */
-	virtual bool IsOkay() { return m_RendererOnline; }
+	protected:
+		bool m_RendererOnline;
 
-protected:
-	bool m_RendererOnline;
-
-};
+	};
+}
